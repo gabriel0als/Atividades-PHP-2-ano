@@ -107,7 +107,7 @@ elseif ($resposta == "vaca") {
 elseif ($resposta == "galinha") {
     $galinha = new Animal($resposta);
 
-    print "O $galinha->especie é $galinha->cor, ele tem $galinha->patas patas, sua pele é de $galinha->pele, " . $galinha->movimentar() . "e faz som " . $galinha->emitirSom() . "\n";
+    print "A $galinha->especie é $galinha->cor, ela tem $galinha->patas patas, sua pele é de $galinha->pele, " . $galinha->movimentar() . "e faz som " . $galinha->emitirSom() . "\n";
 ;
 
 }
@@ -120,5 +120,3 @@ elseif ($resposta == "pato") {
 } else{
 print "Não tenho informações sobre esse animal\n";
 }
-
-
