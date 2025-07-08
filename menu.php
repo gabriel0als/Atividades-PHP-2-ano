@@ -4,17 +4,12 @@
         private $nome;
         private $sobrenome;
         private $idade;
-        private $pessoas = [];
 
-        public function cadastrar($pessoa) {
-            $this->pessoas[] = $pessoa;
+        public function cadastrar() {
+
         }
 
         public function listar() {
-            foreach ($this->pessoas as $p) {
-                print $p->nome . " | " . $p->sobrenome . " | " . $p->idade . "\n";
-                print $p->nome . " " . $p->sobrenome . ", " . $p->idade . " anos\n";
-            }
         }
 
         public function getNome()
@@ -76,19 +71,21 @@
                 $pessoa->setNome(readline("Informe o nome da pessoa: "));
                 $pessoa->setSobrenome(readline("Informe o sobrenome da pessoa: "));
                 $pessoa->setIdade(readline("Informe a idade da pessoa: "));
-                $pessoa->cadastrar($pessoa);
+                array_push($pessoas, $pessoa);
                 break;
 
             case 2:
                 if (empty($pessoa)) {
                     print "Cadastre uma pessoa primeiro ";
                 } else {
-                    $pessoa->listar();
+                    foreach ($pessoas as $p) {
+                        print $p->getNome() . " " . $p->getSobrenome() . ", " . $p->getIdade() . " anos\n";
+                    }
                 }
                 break;
 
             default:
-                print "opção inválida, escolha novamente; ";
+                print "Opção inválida, escolha novamente; ";
         }
     } while ($opcao != 0);
 
