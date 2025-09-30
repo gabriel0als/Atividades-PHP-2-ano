@@ -1,72 +1,69 @@
 <?php
 
-require_once("modelo/Pedido.php");
-require_once("modelo/Prato.php");
+require_once("modelo/Pessoa.php");
+require_once("modelo/PessoaFisica.php");
+require_once("modelo/PessoaJuridica.php");
 
-$pedidos = array();
+print("[1] - Cadastrar pessoa física\n[2] - Cadastrar pessoa jurídica\n[3] - Listar\n[4] - Excluir\n[0] - Sair\n");
 
-$pratos = [
-    new Prato(1, "Camarão à Milanesa", 110.0),
-    new Prato(2, "Pizza Margherita", 80.0),
-    new Prato(3, "Macarrão à Carbonara", 60.0),
-    new Prato(4, "Bife à Parmegiana", 75.0),
-    new Prato(5, "Risoto ao Funghi", 75.0)
-];
-
-
-
-function retornaPrato($pratos, $numPrato) {
-    foreach ($pratos as $p) {
-        if ($numPrato == $p->getNumero()) {
-            return $p;
-        }
-    }
-
-    return null;
-}
+$pessoas = array();
 
 do {
-    foreach ($pratos as $p) {
-        print "Número: " . $p->getNumero() . ", Nome: " . $p->getNome() . ", Valor: " . $p->getValor() . "\n";
-    }
-
-    print "\n(1) - Cadastrar\n(2) - Cancelar\n(3) - Listar\n(4) - Total de vendas\n(0) - Sair\n";
-
-    $opcao = readline("Digite a ação que deseja: ");
+    $opcao = readline("Escolha uma opção: ");
 
     switch ($opcao) {
         case 1:
-            $pedido = new Pedido();
-            $pedido->setNomeCliente(readline("Informe o seu nome: "));
-            $pedido->setNomeGarcom(readline("Informe o nome do garçom: "));
-            $numPrato = readline("Informe o número do prato que deseja: ");
+            $pessoaFisica = new PessoaFisica();
+            $pessoaFisica->setNome(readline("Informe seu nome: "));
+            $pessoaFisica->setIdade(readline("Informe sua idade: "));
+            $pessoaFisica->setCpf(readline("Informe seu CPF: "));
 
-            $numerosPratos = array();
-
-            $pedido->setPrato(retornaPrato($pratos, $numPrato));            
-
-            array_push($pedidos, $pedido);
+            array_push($pessoas, $pessoaFisica);
             break;
         
         case 2:
+            $pessoaJuridica = new PessoaJuridica();
+            $pessoaJuridica->setNome(readline("Informe seu nome: "));
+            $pessoaJuridica->setNomeFantasia(readline("Informe o nome fantasia: "));
+            $pessoaJuridica->setCnpj(readline("Informe o CNPJ: "));
 
+            array_push($pessoas, $pessoaJuridica);
             break;
 
         case 3:
-
+            if (empty($pessoas)) {
+                print "Você ainda não registrou ninguém\n";
+            }
+            foreach ($pessoas as $i => $p) {
+                if ($p instanceof PessoaFisica) {
+                    print "[$i] Física:\nNome: " . $p->getNome() . " - idade: " . $p->getIdade() . " - CPF: " . $p->getCpf() . "\n";
+                } elseif ($p instanceof PessoaJuridica) {
+                    print "[$i] Jurídica:\nNome: " . $p->getNomeFantasia() . " - CNPJ: " . $p->getCnpj() . "\n";
+                }
+            }
             break;
 
         case 4:
+            if (empty($pessoas)) {
+                print "Você ainda não registrou ninguém\n";
+            } else {
+                    $indice = readline("Escolha o indice da pessoa que deseja excluir: ");
 
+                    if ($indice > -1 && $indice < (count($pessoas)-1)) {
+                        array_splice($pessoas, $indice, 1);
+                        print "Registro DELETADO!\n";
+                    } else {
+                        print "Esse índice não é válido\n";
+                    }
+            }
             break;
 
         case 0:
             print "Programa encerrado!";
-            break;
-        
+            die;
+
         default:
-            # code...
+        print "Escolha uma opção válida\n";
             break;
     }
 } while ($opcao != 0);
-
